@@ -25,6 +25,10 @@ contract SupplyChain {
 
   //Define a public mapping 'requests' that maps an requestID to an Asset Request
   mapping (uint => Request) requests;
+  mapping (address => Request) requestbyretailer;
+
+  //mapping (address => Request[]) requestbyretailer;
+  //address[] public requestsAccts;
   // Define a public mapping 'itemsHistory' that maps the UPC to an array of TxHash,
   // that track its journey through the supply chain -- to be sent from DApp.
   mapping (uint => string[]) itemsHistory;
@@ -195,6 +199,7 @@ contract SupplyChain {
     _;
   }
 
+
   // In the constructor set 'owner' to the address that instantiated the contract
   // and set 'sku' to 1
   // and set 'upc' to 1
@@ -202,6 +207,7 @@ contract SupplyChain {
     owner = msg.sender;
     sku = 1;
     upc = 1;
+
   }
 
   // Define a function 'kill' if required
@@ -214,6 +220,7 @@ contract SupplyChain {
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
   function requestAsset(uint _requestID, string memory _name, uint _quantity, address payable _originRetailerID, string memory _originRetailerName, address _companyDepartmentReceiving) public
+
   {//string memory _name, address payable _originRetailerID, string memory _originRetailerName, string memory _productNotes
     //productID
     //uint256 _productID = _upc + sku;
@@ -221,29 +228,35 @@ contract SupplyChain {
     //I made requests[] because of the fact that UPC and SKU cannot be created by the retailer
     requests[_requestID] = Request({requestID: _requestID, name: _name, quantity: _quantity, itemState: State.Requested, originRetailerID: _originRetailerID, originRetailerName: _originRetailerName, originCompanyDepartmentID: _companyDepartmentReceiving});
 
+    //requestbyretailer[msg.sender].push(request);
+    //requestbyretailer[msg.sender] = request;
+    //requestsAccts.push(msg.sender)-1;
+
     // Emit the appropriate event
     emit Requested(_requestID);
   }
 
   // Define a function 'receivetItem' that allows the companyDepartment that firsts receive the asset request to mark an item asset as 'Received'
-  function receiveAsset(uint _requestID, address _companyDepartmentPlanningID, uint _upc) public
-  // Call modifier to check if upc has passed previous supply chain stage
-  requested(_requestID)
-  // Call modifier to verify caller of this function
-  verifyCaller(requests[_requestID].originCompanyDepartmentID)
+  function receiveAsset(uint _requestID, address _companyDepartmentPlanningID, uint _upc) public requested(_requestID) verifyCaller(requests[_requestID].originCompanyDepartmentID) returns(string memory)
+
   {
-    //productID
-    uint256 _productID = _upc + sku;
-    address payable _originRetailer = requests[_requestID].originRetailerID;
-    string memory _retailerName = requests[_requestID].originRetailerName;
-    uint _quantityOfAsset = requests[_requestID].quantity;
-    string memory _assetNameSetInRequest = requests[_requestID].name;
-    // Add the new item as part of Harvest
-    assets[_upc] = Asset({sku: sku, upc: _upc, quantity: _quantityOfAsset, name: _assetNameSetInRequest, ownerID: _companyDepartmentPlanningID, originRetailerID: _originRetailer, originRetailerName: _retailerName, productID: _productID, productNotes: "", productPrice: 0, isAvailable: false, itemState: State.Received, originCompanyDepartmentID: _companyDepartmentPlanningID, vendorID: 0x0000000000000000000000000000000000000000, distributionCenterID: address(0), customerID: address(0) });
-    // Increment sku
-    sku = sku + 1;
-    // Emit the appropriate event
-    emit Received(_upc);
+    if (uint(requests[_requestID].itemState) == 0){
+      //productID
+      uint256 _productID = _upc + sku;
+      address payable _originRetailer = requests[_requestID].originRetailerID;
+      string memory _retailerName = requests[_requestID].originRetailerName;
+      uint _quantityOfAsset = requests[_requestID].quantity;
+      string memory _assetNameSetInRequest = requests[_requestID].name;
+      requests[_requestID].itemState = State.Received;
+      // Add the new item as part of Harvest
+      assets[_upc] = Asset({sku: sku, upc: _upc, quantity: _quantityOfAsset, name: _assetNameSetInRequest, ownerID: _companyDepartmentPlanningID, originRetailerID: _originRetailer, originRetailerName: _retailerName, productID: _productID, productNotes: "", productPrice: 0, isAvailable: false, itemState: State.Received, originCompanyDepartmentID: _companyDepartmentPlanningID, vendorID: 0x0000000000000000000000000000000000000000, distributionCenterID: address(0), customerID: address(0) });
+      // Increment sku
+      sku = sku + 1;
+      // Emit the appropriate event
+      emit Received(_upc);
+    }else{
+      return "The request is already Received";
+    }
   }
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
@@ -445,6 +458,38 @@ contract SupplyChain {
   );
   }
 
+  // Define a function 'fetchItemBufferOne' that fetches the data
+  function fetchRequestByRetailer(address _retailerID) public view returns
+  (
+  uint    requestID, //Request ID of each asset identifying every request made by retailers
+  string memory assetName, //Name of the asset
+  uint    assetQuantity, // Quantity of asset
+  uint    itemState,
+  address originRetailerID, // Metamask-Ethereum address of the Retailer
+  string memory originRetailerName, // Retailer Name
+  address originCompanyDepartmentID
+  )
+  {
+  // Assign values to the 8 parameters
+  requestID = requestbyretailer[_retailerID].requestID;
+  assetName = requestbyretailer[_retailerID].name;
+  assetQuantity = requestbyretailer[_retailerID].quantity;
+  itemState = uint(requestbyretailer[_retailerID].itemState);//converts type State of itemState to uint
+  originRetailerID = requestbyretailer[_retailerID].originRetailerID;
+  originRetailerName = requestbyretailer[_retailerID].originRetailerName;
+  originCompanyDepartmentID = requestbyretailer[_retailerID].originCompanyDepartmentID;
+
+  return
+  (
+  requestID,
+  assetName,
+  assetQuantity,
+  itemState,
+  originRetailerID,
+  originRetailerName,
+  originCompanyDepartmentID
+  );
+  }
   // Define a function 'fetchItemBufferOne' that fetches the data
   function fetchAssetBufferOne(uint _upc) public view returns
   (

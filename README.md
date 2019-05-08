@@ -4,15 +4,21 @@
 
   The user story is similar to any commonly used supply chain process. A Retailer can add submit orders of assets; then, the company reviews the orders and approve them; following this, the distribution center receives  the order and process it; once the order is ready, it is shipped to retailer for selling the asset composing the order. The whole cycle of ordering is stored in the blockchain. A Customer can buy telco assets, such as mobile phones and tablets from the Retailers. Additionally a Retailer can mark an item as ForSale, and similarly a Customer can mark an item as Sold when the amount, which is paid for it, is sufficient and ownership is transferred to the Customer.
 
-<!-- The DApp User Interface when running should look like...
+ The DApp User Interface:
 
-![truffle test](images/ftc_product_overview.png)
+![truffle test](images/fetch.png)
 
-![truffle test](images/ftc_farm_details.png)
+![truffle test](images/company.png)
 
-![truffle test](images/ftc_product_details.png)
+![truffle test](images/distribution.png)
 
-![truffle test](images/ftc_transaction_history.png) -->
+![truffle test](images/vendor.png)
+
+![truffle test](images/customer.png)
+
+![truffle test](images/transactions.png)
+
+
 
 
 ## Getting Started
