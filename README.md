@@ -8,12 +8,12 @@
 
   ![truffle test](images/contract-address.png)
 
-  The scenario implemented by this project can easily perceived by the following diagrams:
-
+  The scenario implemented by this project can easily perceived by the following diagrams.
+**Sequence Diagram:**
   ![truffle test](diagrams/sequence.png)
-
+**State Diagram:**
   ![truffle test](diagrams/state.png)
-
+**Class Diagram:**
   ![truffle test](diagrams/class.png)
 
  The DApp User Interface:
