@@ -1,9 +1,16 @@
 pragma solidity ^0.5.0;
+import '../telcoaccesscontrol/CompanyDepartmentRole.sol';
+import '../telcoaccesscontrol/CustomerRole.sol';
+import '../telcoaccesscontrol/DistributionCenterRole.sol';
+import '../telcoaccesscontrol/RetailerRole.sol';
+import '../telcoaccesscontrol/VendorRole.sol';
+import '../telcocore/Ownable.sol';
+
 // Define a contract 'Supplychain'
-contract SupplyChain {
+contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterRole, CompanyDepartmentRole, VendorRole{
 
   // Define 'owner'
-  address payable owner;
+  address payable ownerAddress;
 
   // Define a variable called 'upc' for Universal Product Code (UPC)
   uint  upc;
@@ -113,7 +120,7 @@ contract SupplyChain {
 
   // Define a modifer that checks to see if msg.sender == owner of the contract
   modifier onlyOwner() {
-    require(msg.sender == owner, "Only the owner can kill this contract");
+    require(msg.sender == ownerAddress, "Only the owner can kill this contract");
     _;
   }
 
@@ -204,7 +211,7 @@ contract SupplyChain {
   // and set 'sku' to 1
   // and set 'upc' to 1
   constructor() public payable {
-    owner = msg.sender;
+    ownerAddress = msg.sender;
     sku = 1;
     upc = 1;
 
@@ -212,9 +219,9 @@ contract SupplyChain {
 
   // Define a function 'kill' if required
   function mortalKill() public {
-    if (msg.sender == owner) {
+    if (msg.sender == ownerAddress) {
 
-      selfdestruct(owner);
+      selfdestruct(ownerAddress);
     }
   }
 

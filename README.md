@@ -4,9 +4,9 @@
 
   The user story is similar to any commonly used supply chain process. A Retailer can add submit orders of assets; then, the company reviews the orders and approve them; following this, the distribution center receives  the order and process it; once the order is ready, it is shipped to retailer for selling the asset composing the order. The whole cycle of ordering is stored in the blockchain. A Customer can buy telco assets, such as mobile phones and tablets from the Retailers. Additionally a Retailer can mark an item as ForSale, and similarly a Customer can mark an item as Sold when the amount, which is paid for it, is sufficient and ownership is transferred to the Customer.
 
-  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. Create a .env file and define the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. In the **truffle.js** file use the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. The contract's address is *0xb98DebF288F7D48DE51e2FB848e0a0c272715566*, with transaction hash, *0xa09496f978ec4a9e170d52eb4208f52a5aec60f1090ba87dcd82840b6f1c1cf3*.
+  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. Create a .env file and define the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. In the **truffle.js** file use the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. The contract's address is *0x6CaeE2848724ace93006013577598d8C7aD1CBa3*, with transaction hash, *0xf89babdb5ddc64b29e356a44de80b77a0d816039fae672cae8dd0571cc8acc68*.
 
-  ![truffle test](images/contract-address.png)
+  ![truffle test](images/contract.png)
 
   The scenario implemented by this project can easily perceived by the following diagrams.
 **Sequence Diagram:**
@@ -124,3 +124,4 @@ to make the web faster, safer, and more open.
 ## Acknowledgments
 * Solidity
 * Truffle
+* Infura
