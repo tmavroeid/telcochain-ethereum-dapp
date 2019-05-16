@@ -37,7 +37,11 @@
 
 ### Prerequisites
 
-Please make sure you've already installed ganache-cli, Truffle and enabled MetaMask extension in your browser.
+Please make sure you've already installed ganache-cli, Truffle and enabled MetaMask extension in your browser. Install the project's prerequisites with: 
+
+```
+npm install
+```
 
 <!-- ```
 Give examples (to be clarified)

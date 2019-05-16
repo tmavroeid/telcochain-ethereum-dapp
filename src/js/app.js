@@ -35,7 +35,7 @@ App = {
         App.name = $("#assetName").val();
         App.ownerID = $("#ownerID").val();
         App.originRetailerID = $("#originRetailerID").val();
-        App.originRetailerName = $("#originRetailerID").val();
+        App.originRetailerName = $("#originRetailerName").val();
         App.productID = $("#productID").val();
         App.isAvailable = $("#isAvailable").val();
         App.productNotes = $("#productNotes").val();
@@ -128,6 +128,7 @@ App = {
 
         });
 
+
         return App.bindEvents();
     },
 
@@ -188,6 +189,18 @@ App = {
                 break;
             case 15:
                 return await App.fetchAssetBufferTwo(event);
+                break;
+            case 16:
+                return await App.addRetailer(event);
+                break;
+            case 17:
+                return await App.renounceRetailer(event);
+                break;
+            case 18:
+                return await App.addCompanyDepartment(event);
+                break;
+            case 19:
+                return await App.renounceCompanyDepartment(event);
                 break;
             }
     },
@@ -435,6 +448,46 @@ App = {
         }).then(function(result) {
             $("#ftc-item").text(result);
             console.log('buyAsset',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addRetailer: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            console.log("skatoules1")
+            console.log(App.retailerID);
+            console.log("skatoules2")
+
+            console.log(App.metamaskAccountID);
+            return instance.addretailer(App.retailerID, {from: App.metamaskAccountID});
+            console.log("skatoules3")
+
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addRetailer',result);
+        }).catch(function(err) {
+            console.log(err.message);
+        });
+    },
+
+    addCompanyDepartment: function (event) {
+        event.preventDefault();
+        var processId = parseInt($(event.target).data('id'));
+
+        App.contracts.SupplyChain.deployed().then(function(instance) {
+            console.log(App.originCompanyDepartmentID);
+            console.log("skatoules4")
+            console.log(App.metamaskAccountID);
+            return instance.addcompanydepartment(App.originCompanyDepartmentID, {from: App.metamaskAccountID});
+            console.log("skatoules5")
+
+        }).then(function(result) {
+            $("#ftc-item").text(result);
+            console.log('addcompanydepartment',result);
         }).catch(function(err) {
             console.log(err.message);
         });

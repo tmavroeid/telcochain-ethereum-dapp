@@ -10,7 +10,7 @@ import '../telcocore/Ownable.sol';
 contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterRole, CompanyDepartmentRole, VendorRole{
 
   // Define 'owner'
-  address payable ownerAddress;
+  address payable originalOwner;
 
   // Define a variable called 'upc' for Universal Product Code (UPC)
   uint  upc;
@@ -116,11 +116,13 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
   event Acquired(uint upc);
   event ForSale(uint upc);
   event Sold(uint upc);
-
-
+  event RetailerAdded(address indexed account);
+  event RetailerRemoved(address indexed account);
+  event CompanyDepartmentAdded(address indexed account);
+  event CompanyDepartmentRemoved(address indexed account);
   // Define a modifer that checks to see if msg.sender == owner of the contract
   modifier onlyOwner() {
-    require(msg.sender == ownerAddress, "Only the owner can kill this contract");
+    require(msg.sender == originalOwner, "Only the owner can perform this action!!");
     _;
   }
 
@@ -211,7 +213,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
   // and set 'sku' to 1
   // and set 'upc' to 1
   constructor() public payable {
-    ownerAddress = msg.sender;
+    originalOwner = msg.sender;
     sku = 1;
     upc = 1;
 
@@ -219,14 +221,15 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'kill' if required
   function mortalKill() public {
-    if (msg.sender == ownerAddress) {
+    if (msg.sender == originalOwner) {
 
-      selfdestruct(ownerAddress);
+      selfdestruct(originalOwner);
     }
   }
 
   // Define a function 'harvestItem' that allows a farmer to mark an item 'Harvested'
   function requestAsset(uint _requestID, string memory _name, uint _quantity, address payable _originRetailerID, string memory _originRetailerName, address _companyDepartmentReceiving) public
+  onlyRetailer()
 
   {//string memory _name, address payable _originRetailerID, string memory _originRetailerName, string memory _productNotes
     //productID
@@ -244,7 +247,11 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
   }
 
   // Define a function 'receivetItem' that allows the companyDepartment that firsts receive the asset request to mark an item asset as 'Received'
-  function receiveAsset(uint _requestID, address _companyDepartmentPlanningID, uint _upc) public requested(_requestID) verifyCaller(requests[_requestID].originCompanyDepartmentID) returns(string memory)
+  function receiveAsset(uint _requestID, address _companyDepartmentPlanningID, uint _upc) public
+  onlyCompanyDepartment()
+  requested(_requestID)
+  verifyCaller(requests[_requestID].originCompanyDepartmentID)
+  returns(string memory)
 
   {
     if (uint(requests[_requestID].itemState) == 0){
@@ -268,6 +275,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function planAsset(uint _upc, uint _productPrice, string memory _productNotes, address _companyDepartmentApprovingID) public
+  onlyCompanyDepartment()
   // Call modifier to check if upc has passed previous supply chain stage
   received(_upc)
   // Call modifier to verify caller of this function
@@ -285,6 +293,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function approveAsset(uint _upc, address _distributioncenterID) public
+  onlyCompanyDepartment()
   // Call modifier to check if upc has passed previous supply chain stage
   planned(_upc)
   // Call modifier to verify caller of this function
@@ -300,6 +309,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function processAsset(uint _upc, bool _isavailable, address _vendorID) public
+  onlyDistributionCenter()
   // Call modifier to check if upc has passed previous supply chain stage
   approved(_upc)
   // Call modifier to verify caller of this function
@@ -331,6 +341,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function dispatchAsset(uint _upc) public
+  onlyVendor()
   // Call modifier to check if upc has passed previous supply chain stage
   madevendororder(_upc)
   // Call modifier to verify caller of this function
@@ -344,6 +355,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function collectAsset(uint _upc) public
+  onlyDistributionCenter()
   // Call modifier to check if upc has passed previous supply chain stage
   dispatchedvendororder(_upc)
   // Call modifier to verify caller of this function
@@ -357,6 +369,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'packItem' that allows a farmer to mark an item 'Packed'
   function packageAsset(uint _upc) public
+  onlyDistributionCenter()
   // Call modifier to check if upc has passed previous supply chain stage
   availabilityCheck(_upc)
   // Call modifier to verify caller of this function
@@ -372,6 +385,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Use the above modifers to check if the item is sold
   function shipAsset(uint _upc) public
+    onlyDistributionCenter()
     // Call modifier to check if upc has passed previous supply chain stage
     packaged(_upc)
     // Call modifier to verify caller of this function
@@ -385,6 +399,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Use the above modifers to check if the item is sold
   function acquireAsset(uint _upc) public
+    onlyRetailer()
     // Call modifier to check if upc has passed previous supply chain stage
     shipped(_upc)
     // Call modifier to verify caller of this function
@@ -399,6 +414,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // Define a function 'sellItem' that allows a farmer to mark an item 'ForSale'
   function sellAsset(uint _upc) public
+  onlyRetailer()
   // Call modifier to check if upc has passed previous supply chain stage
   acquired(_upc)
   // Call modifier to verify caller of this function
@@ -412,6 +428,7 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
 
   // and any excess ether sent is refunded back to the buyer
   function buyAsset(uint _upc) public payable
+    onlyCustomer()
     // Call modifier to check if upc has passed previous supply chain stage
     forSale(_upc)
     // Call modifer to check if buyer has paid enough
@@ -431,7 +448,15 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
     emit Sold(_upc);
   }
 
+  function addretailer (address account) public onlyOwner() {
+    addRetailer(account);
+    emit RetailerAdded(account);
+  }
 
+  function addcompanydepartment (address account) public onlyOwner() {
+    addCompanyDepartment(account);
+    emit CompanyDepartmentAdded(account);
+  }
   // Define a function 'fetchItemBufferOne' that fetches the data
   function fetchRequest(uint _requestID) public view returns
   (

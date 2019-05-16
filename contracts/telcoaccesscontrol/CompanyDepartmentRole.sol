@@ -8,8 +8,8 @@ contract CompanyDepartmentRole {
   using Roles for Roles.Role;
 
   // Define 2 events, one for Adding, and other for Removing
-  event CompanyDepartmentAdded(address indexed account);
-  event CompanyDepartmentRemoved(address indexed account);
+  // event CompanyDepartmentAdded(address indexed account);
+  // event CompanyDepartmentRemoved(address indexed account);
 
   // Define a struct 'CompanyDepartments' by inheriting from 'Roles' library, struct Role
   Roles.Role private companydepartments;
@@ -31,7 +31,7 @@ contract CompanyDepartmentRole {
   }
 
   // Define a function 'addCompanyDepartment' that adds this role
-  function addCompanyDepartment(address account) public onlyCompanyDepartment {
+  function addCompanyDepartment(address account) public {
     _addCompanyDepartment(account);
   }
 
@@ -43,12 +43,12 @@ contract CompanyDepartmentRole {
   // Define an internal function '_addCompanyDepartment' to add this role, called by 'addCompanyDepartment'
   function _addCompanyDepartment(address account) internal {
     companydepartments.add(account);
-    emit CompanyDepartmentAdded(account);
+    //emit CompanyDepartmentAdded(account);
   }
 
   // Define an internal function '_removeCompanyDepartment' to remove this role, called by 'removeCompanyDepartment'
   function _removeCompanyDepartment(address account) internal {
     companydepartments.remove(account);
-    emit CompanyDepartmentRemoved(account);
+    //emit CompanyDepartmentRemoved(account);
   }
 }
