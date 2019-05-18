@@ -9,6 +9,8 @@
   ![truffle test](images/contract.png)
 
   The scenario implemented by this project can easily perceived by the following diagrams.
+**Activity Diagram:**
+  ![truffle test](diagrams/activity.png)
 **Sequence Diagram:**
   ![truffle test](diagrams/sequence.png)
 **State Diagram:**
