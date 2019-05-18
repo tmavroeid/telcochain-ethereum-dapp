@@ -31,13 +31,13 @@ contract CompanyDepartmentRole {
   }
 
   // Define a function 'addCompanyDepartment' that adds this role
-  function addCompanyDepartment(address account) public {
+  function addCompanyDepartment(address account) internal {
     _addCompanyDepartment(account);
   }
 
   // Define a function 'renounceCompanyDepartment' to renounce this role
-  function renounceCompanyDepartment() public {
-    _removeCompanyDepartment(msg.sender);
+  function renounceCompanyDepartment(address account) internal {
+    _removeCompanyDepartment(account);
   }
 
   // Define an internal function '_addCompanyDepartment' to add this role, called by 'addCompanyDepartment'

@@ -4,7 +4,7 @@
 
   The user story is similar to any commonly used supply chain process. A Retailer can add submit orders of assets; then, the company reviews the orders and approve them; following this, the distribution center receives  the order and process it; once the order is ready, it is shipped to retailer for selling the asset composing the order. The whole cycle of ordering is stored in the blockchain. A Customer can buy telco assets, such as mobile phones and tablets from the Retailers. Additionally a Retailer can mark an item as ForSale, and similarly a Customer can mark an item as Sold when the amount, which is paid for it, is sufficient and ownership is transferred to the Customer.
 
-  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. Create a .env file and define the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. In the **truffle.js** file use the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. The contract's address is *0x6CaeE2848724ace93006013577598d8C7aD1CBa3*, with transaction hash, *0xf89babdb5ddc64b29e356a44de80b77a0d816039fae672cae8dd0571cc8acc68*.
+  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. The contract's address is *0x0e3F3Fb2D40D5Fc8BAc22c58a5a319301332FF28*, with transaction hash, *0x167ad5c3bc037ffde76194a8c0c5cf826557d85a939fabc0c0861b6c95a8c887*.
 
   ![truffle test](images/contract.png)
 
@@ -28,6 +28,8 @@
 
 ![truffle test](images/customer.png)
 
+![truffle test](images/roles_assignment.png)
+
 ![truffle test](images/transactions.png)
 
 
@@ -37,7 +39,7 @@
 
 ### Prerequisites
 
-Please make sure you've already installed ganache-cli, Truffle and enabled MetaMask extension in your browser. Install the project's prerequisites with: 
+Please make sure you've already installed ganache-cli, Truffle and enabled MetaMask extension in your browser. Install the project's prerequisites with:
 
 ```
 npm install
@@ -73,6 +75,8 @@ ganache-cli -m "spirit supply whale amount human item harsh scare congress disco
 Your terminal should look something like this:
 
 ![truffle test](images/ganache-cli.png)
+
+When deploying the smart contracts using the ***Ganache***, the first account is the contracts' ownerID. Therefore, any action permitted in the front-end by the owner should be implemented by this account. For this purpose, this account should be imported in the ***Metamask***.
 
 In a separate terminal window, Compile smart contracts:
 

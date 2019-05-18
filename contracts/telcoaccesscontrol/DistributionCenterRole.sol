@@ -8,8 +8,8 @@ contract DistributionCenterRole {
   using Roles for Roles.Role;
 
   // Define 2 events, one for Adding, and other for Removing
-  event DistributionCenterAdded(address indexed account);
-  event DistributionCenterRemoved(address indexed account);
+  //event DistributionCenterAdded(address indexed account);
+  //event DistributionCenterRemoved(address indexed account);
   // Define a struct 'distributioncenters' by inheriting from 'Roles' library, struct Role
   Roles.Role distributioncenters;
   // In the constructor make the address that deploys this contract the 1st DistributionCenter
@@ -30,24 +30,24 @@ contract DistributionCenterRole {
   }
 
   // Define a function 'addDistributionCenter' that adds this role
-  function addDistributionCenter(address account) public onlyDistributionCenter {
+  function addDistributionCenter(address account) internal {
     _addDistributionCenter(account);
   }
 
   // Define a function 'renounceDistributionCenter' to renounce this role
-  function renounceDistributionCenter() public {
-    _removeDistributionCenter(msg.sender);
+  function renounceDistributionCenter(address account) internal {
+    _removeDistributionCenter(account);
   }
 
   // Define an internal function '_addDistributionCenter' to add this role, called by 'addDistributionCenter'
   function _addDistributionCenter(address account) internal {
     distributioncenters.add(account);
-    emit DistributionCenterAdded(account);
+    //emit DistributionCenterAdded(account);
   }
 
   // Define an internal function '_removeDistributionCenter' to remove this role, called by 'removeDistributionCenter'
   function _removeDistributionCenter(address account) internal {
     distributioncenters.remove(account);
-    emit DistributionCenterRemoved(account);
+    //emit DistributionCenterRemoved(account);
   }
 }

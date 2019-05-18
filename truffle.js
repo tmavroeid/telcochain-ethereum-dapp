@@ -1,10 +1,10 @@
-const { infurakey, infuramnemonic, infuraendpoint } = require('./config');
+//const { infurakey, infuramnemonic, infuraendpoint } = require('./config');
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
-const infuraKey = infurakey;
+const infuraKey = "17b65319c44a48bc98040d5678cb9a2f";
 //
 // const fs = require('fs');
-const mnemonic = infuramnemonic;
+const mnemonic = "end jar civil wink heart acid jump truck rapid region else hood";
 
 module.exports = {
   networks: {

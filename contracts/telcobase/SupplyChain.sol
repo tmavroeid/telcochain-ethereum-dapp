@@ -120,6 +120,10 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
   event RetailerRemoved(address indexed account);
   event CompanyDepartmentAdded(address indexed account);
   event CompanyDepartmentRemoved(address indexed account);
+  event VendorAdded(address indexed account);
+  event VendorRemoved(address indexed account);
+  event DistributionCenterAdded(address indexed account);
+  event DistributionCenterRemoved(address indexed account);
   // Define a modifer that checks to see if msg.sender == owner of the contract
   modifier onlyOwner() {
     require(msg.sender == originalOwner, "Only the owner can perform this action!!");
@@ -453,9 +457,39 @@ contract SupplyChain is Ownable, RetailerRole, CustomerRole, DistributionCenterR
     emit RetailerAdded(account);
   }
 
+  function removeretailer (address account) public onlyOwner(){
+    renounceRetailer(account);
+    emit RetailerRemoved(account);
+  }
+
   function addcompanydepartment (address account) public onlyOwner() {
     addCompanyDepartment(account);
     emit CompanyDepartmentAdded(account);
+  }
+
+  function removecompanydepartment (address account) public onlyOwner(){
+    renounceCompanyDepartment(account);
+    emit CompanyDepartmentRemoved(account);
+  }
+
+  function addvendor (address account) public onlyOwner() {
+    addVendor(account);
+    emit VendorAdded(account);
+  }
+
+  function removevendor (address account) public onlyOwner(){
+    renounceVendor(account);
+    emit VendorRemoved(account);
+  }
+
+  function adddistributioncenter (address account) public onlyOwner() {
+    addDistributionCenter(account);
+    emit DistributionCenterAdded(account);
+  }
+
+  function removedistributioncenter (address account) public onlyOwner(){
+    renounceDistributionCenter(account);
+    emit DistributionCenterRemoved(account);
   }
   // Define a function 'fetchItemBufferOne' that fetches the data
   function fetchRequest(uint _requestID) public view returns
