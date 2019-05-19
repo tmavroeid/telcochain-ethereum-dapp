@@ -4,7 +4,9 @@
 
   The user story is similar to any commonly used supply chain process. A Retailer can add submit orders of assets; then, the company reviews the orders and approve them; following this, the distribution center receives  the order and process it; once the order is ready, it is shipped to retailer for selling the asset composing the order. The whole cycle of ordering is stored in the blockchain. A Customer can buy telco assets, such as mobile phones and tablets from the Retailers. Additionally a Retailer can mark an item as ForSale, and similarly a Customer can mark an item as Sold when the amount, which is paid for it, is sufficient and ownership is transferred to the Customer.
 
-  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. The contract's address is *0x0e3F3Fb2D40D5Fc8BAc22c58a5a319301332FF28*, with transaction hash, *0x167ad5c3bc037ffde76194a8c0c5cf826557d85a939fabc0c0861b6c95a8c887*.
+  The **truffle.js** file of this project is configured to deploy the smart contract in the Ethereum testnet, Rinkeby. The Infura and Metamask are utilized in order to deploy and use the smart contract. Create a .env file and define the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC. In the **truffle.js** file use the INFURA_KEY, INFURA_ENDPOINT and INFURA_MNEMONIC.
+
+  The Dapp is already deployed to the Ethereum testnet, Rinkeby. The contract's address is *0x18064D9b0FF209de5fe8203fd0c7371e003C9686*, with transaction hash, *0xb5d154903d6c769bfc13556f2c09d5a4ac7c6434caa4660a67e7aab9757d074c*.
 
   ![truffle test](images/contract.png)
 
